@@ -1,13 +1,12 @@
 package edu.aritra.springbatch.batch;
 
-import java.util.List;
-
+import edu.aritra.springbatch.target.model.Users;
+import edu.aritra.springbatch.target.repository.UsersRepository;
 import org.springframework.batch.item.ItemWriter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import edu.aritra.springbatch.model.Users;
-import edu.aritra.springbatch.repository.UsersRepository;
+import java.util.List;
 
 @Component
 public class TargetDbItemWriter implements ItemWriter<Users> {

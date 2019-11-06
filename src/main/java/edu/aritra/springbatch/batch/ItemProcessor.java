@@ -1,11 +1,10 @@
 package edu.aritra.springbatch.batch;
 
-import java.util.HashMap;
-import java.util.Map;
-
+import edu.aritra.springbatch.target.model.Users;
 import org.springframework.stereotype.Component;
 
-import edu.aritra.springbatch.model.Users;
+import java.util.HashMap;
+import java.util.Map;
 
 @Component
 public class ItemProcessor implements org.springframework.batch.item.ItemProcessor<Users, Users> {

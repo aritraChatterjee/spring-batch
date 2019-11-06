@@ -2,6 +2,8 @@ package edu.aritra.springbatch.config;
 
 import org.springframework.batch.core.Job;
 import org.springframework.batch.core.Step;
+import org.springframework.batch.core.configuration.annotation.BatchConfigurer;
+import org.springframework.batch.core.configuration.annotation.DefaultBatchConfigurer;
 import org.springframework.batch.core.configuration.annotation.EnableBatchProcessing;
 import org.springframework.batch.core.configuration.annotation.JobBuilderFactory;
 import org.springframework.batch.core.configuration.annotation.StepBuilderFactory;
@@ -14,16 +16,21 @@ import org.springframework.batch.item.file.LineMapper;
 import org.springframework.batch.item.file.mapping.BeanWrapperFieldSetMapper;
 import org.springframework.batch.item.file.mapping.DefaultLineMapper;
 import org.springframework.batch.item.file.transform.DelimitedLineTokenizer;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.io.Resource;
+import org.springframework.transaction.PlatformTransactionManager;
 
-import edu.aritra.springbatch.model.Users;
+import edu.aritra.springbatch.target.model.Users;
 
 @Configuration
 @EnableBatchProcessing
 public class SpringBatchConfig {
+
+    @Autowired
+    PlatformTransactionManager batchTransactionManager;
 
     @Bean
     public Job job(JobBuilderFactory jobBuilderFactory,
@@ -73,5 +80,15 @@ public class SpringBatchConfig {
         defaultLineMapper.setFieldSetMapper(fieldSetMapper);
 
         return defaultLineMapper;
+    }
+
+    @Bean
+    public BatchConfigurer batchConfigurer() {
+        return new DefaultBatchConfigurer() {
+            @Override
+            public PlatformTransactionManager getTransactionManager() {
+                return batchTransactionManager;
+            }
+        };
     }
 }
