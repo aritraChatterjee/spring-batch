@@ -34,10 +34,10 @@ public class SpringBatchConfig {
 
     @Bean
     public Job job(JobBuilderFactory jobBuilderFactory,
-            StepBuilderFactory stepBuilderFactory,
-            ItemReader<Users> itemReader,
-            ItemProcessor<Users, Users> itemProcessor,
-            ItemWriter<Users> itemWriter
+                   StepBuilderFactory stepBuilderFactory,
+                   ItemReader<Users> itemReader,
+                   ItemProcessor<Users, Users> itemProcessor,
+                   ItemWriter<Users> itemWriter
     ) {
 
         Step step = stepBuilderFactory.get("ETL-file-load")

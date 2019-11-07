@@ -1,10 +1,6 @@
 package edu.aritra.springbatch.config;
 
-import java.util.HashMap;
-import java.util.Map;
-
-import javax.sql.DataSource;
-
+import com.zaxxer.hikari.HikariDataSource;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.autoconfigure.jdbc.DataSourceProperties;
 import org.springframework.boot.context.properties.ConfigurationProperties;
@@ -17,7 +13,9 @@ import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
-import com.zaxxer.hikari.HikariDataSource;
+import javax.sql.DataSource;
+import java.util.HashMap;
+import java.util.Map;
 
 @Configuration
 @EnableTransactionManagement
@@ -55,8 +53,8 @@ public class TargetDataSourceConfig {
 
     @Bean
     public PlatformTransactionManager targetTransactionManager(
-            final @Qualifier("targetEntityManagerFactory") LocalContainerEntityManagerFactoryBean memberEntityManagerFactory) {
-        return new JpaTransactionManager(memberEntityManagerFactory.getObject());
+            final @Qualifier("targetEntityManagerFactory") LocalContainerEntityManagerFactoryBean entityManagerFactory) {
+        return new JpaTransactionManager(entityManagerFactory.getObject());
     }
 
 }
