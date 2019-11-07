@@ -7,7 +7,6 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.orm.jpa.EntityManagerFactoryBuilder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Primary;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.orm.jpa.JpaTransactionManager;
 import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
@@ -20,45 +19,41 @@ import java.util.Map;
 
 @Configuration
 @EnableTransactionManagement
-@EnableJpaRepositories(basePackages = "edu.aritra.springbatch.batch",
-        entityManagerFactoryRef = "batchEntityManagerFactory",
-        transactionManagerRef = "batchTransactionManager"
+@EnableJpaRepositories(basePackages = "edu.aritra.springbatch.target",
+        entityManagerFactoryRef = "targetEntityManagerFactory",
+        transactionManagerRef = "targetTransactionManager"
 )
-public class BatchDataSourceConfig {
+public class TargetDbConfig {
 
-    @Primary
     @Bean
-    @ConfigurationProperties("batch.datasource")
-    public DataSourceProperties batchDataSourceProperties() {
+    @ConfigurationProperties("target.datasource")
+    public DataSourceProperties targetDataSourceProperties() {
         return new DataSourceProperties();
     }
 
-    @Primary
     @Bean
-    @ConfigurationProperties("batch.datasource.configuration")
-    public DataSource batchDataSource() {
-        return batchDataSourceProperties().initializeDataSourceBuilder()
+    @ConfigurationProperties("target.datasource.configuration")
+    public DataSource targetDataSource() {
+        return targetDataSourceProperties().initializeDataSourceBuilder()
                 .type(HikariDataSource.class).build();
     }
 
-    @Primary
-    @Bean(name = "batchEntityManagerFactory")
-    public LocalContainerEntityManagerFactoryBean batchEntityManagerFactory(EntityManagerFactoryBuilder builder) {
+    @Bean(name = "targetEntityManagerFactory")
+    public LocalContainerEntityManagerFactoryBean targetEntityManagerFactory(EntityManagerFactoryBuilder builder) {
 
         Map<String, Object> properties = new HashMap<String, Object>();
         properties.put("hibernate.hbm2ddl.auto", "update");
 
         return builder
-                .dataSource(batchDataSource())
-                .packages("edu.aritra.springbatch.batch")
+                .dataSource(targetDataSource())
+                .packages("edu.aritra.springbatch.target")
                 .properties(properties)
                 .build();
     }
 
-    @Primary
     @Bean
-    public PlatformTransactionManager batchTransactionManager(
-            final @Qualifier("batchEntityManagerFactory") LocalContainerEntityManagerFactoryBean entityManagerFactory) {
+    public PlatformTransactionManager targetTransactionManager(
+            final @Qualifier("targetEntityManagerFactory") LocalContainerEntityManagerFactoryBean entityManagerFactory) {
         return new JpaTransactionManager(entityManagerFactory.getObject());
     }
 

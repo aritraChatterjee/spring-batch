@@ -27,7 +27,7 @@ import edu.aritra.springbatch.target.model.Users;
 
 @Configuration
 @EnableBatchProcessing
-public class SpringBatchConfig {
+public class BatchConfig {
 
     @Autowired
     PlatformTransactionManager batchTransactionManager;
